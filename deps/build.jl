@@ -1,9 +1,9 @@
-using PyCall: pyimport, pycall
+using PyCall: pyimport_conda, pycall
 using RCall, Conda
 
 function installpypackage()
 	try
-		pyimport_conda("sklearn")
+		pyimport_conda("sklearn", "scikit-learn")
 	catch
 		try
 			Conda.add("scikit-learn")
@@ -21,14 +21,16 @@ function installrpackage(package::AbstractString)
 		try
 			R"dir.create(path = Sys.getenv('R_LIBS_USER'), showWarnings = FALSE, recursive = TRUE)"
 			R"install.packages($package,lib=Sys.getenv('R_LIBS_USER'),repos='https://cloud.r-project.org',type='binary')"
-		catch
+		catch xerror
+			println(xerror)
 			println("package "*package*" failed to install")
 		end
 	end
 end
 
 function installrml()
-	packages=["caret", "earth","mda","e1071","gam","randomForest","nnet","kernlab","grid","MASS","pls"]
+	#packages=["caret", "earth","mda","e1071","gam","randomForest","nnet","kernlab","grid","MASS","pls"]
+	packages=["caret", "e1071","gam","randomForest"]
 	for pk in packages
 		installrpackage(pk)
 	end
