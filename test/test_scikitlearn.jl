@@ -1,15 +1,9 @@
 module TestSKL
 
-#using TSML
-using TSML.Utils
-using TSML.TSMLTypes
-
+using TSML
 using TSMLextra
-using TSMLextra.SKLearners
-
-using Random
-using Test
 using PyCall
+using Test
 
 const IRIS = getiris()
 const X = IRIS[:,1:4] |> Matrix

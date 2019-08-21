@@ -1,7 +1,8 @@
 module TSMLextra
-using TSML
 
-greet() = print("Hello World!")
+using Reexport
+
+@reexport using TSML
 
 include("system.jl")
 using .System
@@ -21,6 +22,5 @@ if LIB_SKL_AVAILABLE # from System module
     include("scikitlearn.jl")
     using .SKLearners
 end
-
 
 end # module

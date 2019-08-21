@@ -1,19 +1,10 @@
 module TestReaderWriter
 
 using TSML
-using TSML.Utils
-using TSML.TSMLTypes
-using TSML.TSMLTransformers
-
 using TSMLextra
-using TSMLextra.DataReaders
-using TSMLextra.DataWriters
-
-using DataFrames
-using Dates
 using Test
 
-function test_readerwriter()
+function test_csv()
     gcdims = (8761,2)
     ssum = 97564.0
     resdf=DataFrame()
@@ -36,6 +27,22 @@ function test_readerwriter()
     @test sum(size(resdf) .== gcdims) == 2
     @test sum(resdf.Value) |> round == ssum
     rm(csvname,force=true)
+end
+@testset "Data Readers/Writers: csv" begin
+    test_csv()
+end
+
+function test_hdf5()
+    gcdims = (8761,2)
+    ssum = 97564.0
+    resdf=DataFrame()
+    datapath=joinpath(dirname(pathof(TSMLextra)),"../data")
+    outputfname = joinpath(tempdir(),"testdateval.csv")
+    basefilename = "testdateval"
+    fname = joinpath(datapath,basefilename*".csv")
+    lcsv=DataReader(Dict(:filename=>fname))
+    fit!(lcsv)
+    dateval=transform!(lcsv)
     # check hdf5
     hdf5name = replace(outputfname,"csv"=>"h5")
     lhdf5 = DataWriter(Dict(:filename=>hdf5name))
@@ -47,6 +54,22 @@ function test_readerwriter()
     @test sum(size(resdf) .== gcdims) == 2
     @test sum(resdf.Value) |> round == ssum
     rm(hdf5name,force=true)
+end
+@testset "Data Readers/Writers: hdf5" begin
+    test_hdf5()
+end
+
+function test_feather()
+    gcdims = (8761,2)
+    ssum = 97564.0
+    resdf=DataFrame()
+    datapath=joinpath(dirname(pathof(TSMLextra)),"../data")
+    outputfname = joinpath(tempdir(),"testdateval.csv")
+    basefilename = "testdateval"
+    fname = joinpath(datapath,basefilename*".csv")
+    lcsv=DataReader(Dict(:filename=>fname))
+    fit!(lcsv)
+    dateval=transform!(lcsv)
     # check feather
     feathername = replace(outputfname,"csv"=>"feather")
     lfeather = DataWriter(Dict(:filename=>feathername))
@@ -58,6 +81,22 @@ function test_readerwriter()
     @test sum(size(resdf) .== gcdims) == 2
     @test sum(resdf.Value) |> round == ssum
     rm(feathername,force=true)
+end
+@testset "Data Readers/Writers: feather" begin
+    test_feather()
+end
+
+function test_jld()
+    gcdims = (8761,2)
+    ssum = 97564.0
+    resdf=DataFrame()
+    datapath=joinpath(dirname(pathof(TSMLextra)),"../data")
+    outputfname = joinpath(tempdir(),"testdateval.csv")
+    basefilename = "testdateval"
+    fname = joinpath(datapath,basefilename*".csv")
+    lcsv=DataReader(Dict(:filename=>fname))
+    fit!(lcsv)
+    dateval=transform!(lcsv)
     # check jld
     jldname = replace(outputfname,"csv"=>"jld")
     ljld = DataWriter(Dict(:filename=>jldname))
@@ -70,8 +109,8 @@ function test_readerwriter()
     @test sum(resdf.Value) |> round == ssum
     rm(jldname,force=true)
 end
-@testset "Data Readers/Writers: csv,hdf5,feather,jld" begin
-    test_readerwriter()
+@testset "Data Readers/Writers: jld" begin
+    test_jld()
 end
 
 

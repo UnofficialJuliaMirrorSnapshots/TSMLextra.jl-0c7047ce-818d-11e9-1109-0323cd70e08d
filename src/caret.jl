@@ -1,11 +1,8 @@
-module CaretLearners
+@reexport module CaretLearners
 
 export CaretLearner,fit!,transform!
-export caretrun
 
-using TSML.TSMLTypes
-using TSML.Utils
-using DataFrames
+using TSML
 
 import TSML.TSMLTypes.fit!   # importing to overload
 import TSML.TSMLTypes.transform! # importing to overload
@@ -13,10 +10,8 @@ import TSML.TSMLTypes.transform! # importing to overload
 using RCall
 
 function initlibs()
-    #packages = ["caret","e1071","gam","randomForest",
-    #            "nnet","kernlab","grid","MASS","pls"]
-    packages = ["caret","e1071","gam","randomForest"]
-
+    #packages = ["caret","e1071","gam","randomForest","nnet","kernlab","grid","MASS","pls"]
+    packages = ["caret","randomForest"]
     for pk in packages
         rcall(:library,pk,"lib=.libPaths()")
     end
@@ -28,7 +23,7 @@ mutable struct CaretLearner <: TSLearner
 
     function CaretLearner(args=Dict())
         #fitControl=:(R"trainControl(method = 'repeatedcv',number = 5)")
-        fitControl="trainControl(method = 'cv',number=5)"
+        fitControl="trainControl(method = 'none')"
         default_args = Dict(
             :output => :class,
             :learner => "rf",

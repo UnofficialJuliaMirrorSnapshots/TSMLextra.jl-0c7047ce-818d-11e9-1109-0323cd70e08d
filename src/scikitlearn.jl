@@ -1,14 +1,10 @@
-module SKLearners
+@reexport module SKLearners
 
 export SKLearner,transform!,fit!
-export skkrun
 
-using TSML.TSMLTypes
+using TSML
 import TSML.TSMLTypes.fit! # to overload
 import TSML.TSMLTypes.transform! # to overload
-using TSML.Utils
-
-using DataFrames
 
 using PyCall
 

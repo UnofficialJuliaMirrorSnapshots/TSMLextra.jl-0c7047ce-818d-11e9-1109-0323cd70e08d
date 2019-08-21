@@ -1,23 +1,17 @@
-module DataReaders
+@reexport module DataReaders
 using FileIO
 using CSVFiles
 using FeatherFiles
 using Feather
-using DataFrames
 using HDF5
 using JLD
 using Parquet
-using Dates
 
 export DataReader, fit!, transform!
-export Transformer
-export datareaderrun
 
 using TSML
-using TSML.TSMLTypes
 import TSML.TSMLTypes.fit! # to overload
 import TSML.TSMLTypes.transform! # to overload
-using TSML.Utils
 
 const FILEFMT = Dict("csv"=>Val(:csv),"feather"=>Val(:feather),"hdf5"=>Val(:hdf5),
           "h5"=>Val(:hdf5),"parquet"=>Val(:parquet),"jld"=>Val(:jld))
