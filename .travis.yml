@@ -5,15 +5,15 @@ os:
   - osx
 julia:
   - 1.0
+  - 1.1
   - 1.2
   - nightly
 matrix:
   allow_failures:
     - julia: nightly
+    - julia: 1.0
 notifications:
   email: false
-before_script:
-  - while sleep 30; do tail ~/build/ppalmes/TSMLextra.jl/deps/build.log -f ; done &
 
 before_install:
   # linux
